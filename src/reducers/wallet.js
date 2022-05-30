@@ -1,26 +1,24 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { REQUEST_CURRENCIES, RECEIVED_CURRENCIES } from '../actions';
+import { RECEIVE_CURRENCY, RECEIVE_EXPENSES } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
-  loading: false,
 };
 
 export default function wallet(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case REQUEST_CURRENCIES:
+  case RECEIVE_CURRENCY:
     return {
       ...state,
-      loading: true,
+      currencies: Object.keys(action.currency).filter((currency) => currency !== 'USDT'),
     };
-  case RECEIVED_CURRENCIES:
+  case RECEIVE_EXPENSES:
     return {
       ...state,
-      loading: false,
-      currencies: Object.keys(action.currency).filter((c) => c !== 'USDT'),
+      expenses: [...state.expenses, Object.assign(action.expenses, action.data)],
     };
-  default:
-    return state;
+    default:
+      return state;
   }
 }

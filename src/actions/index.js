@@ -1,31 +1,45 @@
-import API from '../API/API';
+import requestAPI from '../API/requestAPI';
 
-export const USER_EMAIL = 'USER_EMAIL';
-export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
-export const RECEIVED_CURRENCIES = 'RECEIVED_CURRENCIES';
+export const RECEIVE_USER = 'RECEIVE_USER';
+export const RECEIVE_EXPENSES = 'RECEIVE_EXPENSES';
+export const RECEIVE_CURRENCY = 'RECEIVE_CURRENCY';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+const REQUEST_CURRENCY = 'REQUEST_CURRENCY';
+const REQUEST_EXPENSES = 'REQUEST_EXPENSES';
 
-export const recivedUser = (payload) => ({
-  type: USER_EMAIL,
-  payload,
+export const receiveUser = (email) => ({
+  type: RECEIVE_USER,
+  email,
 });
-
-// const currenciesAPI = (payload) => ({
-//   type: 'API_CURRENCIES', payload,
-// });
-
-const requestCurrency = () => ({ type: REQUEST_CURRENCIES });
-
+const requestExpenses = () => ({
+  type: REQUEST_EXPENSES,
+});
+const receiveExpenses = (data, expenses) => ({
+  type: RECEIVE_EXPENSES,
+  expenses,
+  data: { exchangeRates: data },
+});
+export const fetchExpenses = (expenses) => async (dispatch) => {
+  dispatch(requestExpenses());
+  return requestAPI()
+    .then(
+      (data) => dispatch(receiveExpenses(data, expenses)),
+    );
+};
+const requestCurrency = () => ({ type: REQUEST_CURRENCY });
 const receiveCurrency = (currency) => ({
-  type: RECEIVED_CURRENCIES,
+  type: RECEIVE_CURRENCY,
   currency,
 });
-
-const fetchCurrenciesAPI = () => (dispatch) => {
+export const fetchCurrencyAPI = () => async (dispatch) => {
   dispatch(requestCurrency());
-  return API()
+  return requestAPI()
     .then(
       (data) => dispatch(receiveCurrency(data)),
     );
 };
 
-export default fetchCurrenciesAPI;
+export const deleteExpense = (id) => ({
+  type: DELETE_EXPENSE,
+  id,
+});

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import fetchCurrenciesAPI from '../actions';
+import { fetchCurrencyAPI } from '../actions';
 import Header from '../components/Header';
 import WalletForm from '../components/WalletForm';
+import WalletTable from '../components/WalletTable';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -17,13 +18,14 @@ class Wallet extends React.Component {
       <div>
         <Header />
         <WalletForm />
+        <WalletTable />
       </div>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  currencies: () => dispatch(fetchCurrenciesAPI()),
+  currencies: () => dispatch(fetchCurrencyAPI()),
 });
 
 Wallet.propTypes = {

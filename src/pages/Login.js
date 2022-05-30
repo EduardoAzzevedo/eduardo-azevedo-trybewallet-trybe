@@ -2,71 +2,65 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { recivedUser } from '../actions';
+import { receiveUser } from '../actions';
 
 class Login extends React.Component {
   constructor() {
     super();
+
+    this.handleChanges = this.handleChanges.bind(this);
+    this.submitBtn = this.submitBtn.bind(this);
     this.state = {
       email: '',
       password: '',
-      disabled: true,
+      isDisabled: true,
     };
-    this.handleChanges = this.handleChanges.bind(this);
-    this.sendButton = this.sendButton.bind(this);
   }
 
   handleChanges({ target }) {
     this.setState({
       [target.type]: target.value,
     });
-    this.sendButton();
+    this.submitBtn();
   }
 
-  sendButton() {
-    const magicNumber = 6;
+  submitBtn() {
+    const passwordLenght = 6;
+
     this.setState((state) => {
       if (state.email.includes('@')
-        && state.email.includes('.com')
-        && state.password.length >= magicNumber) {
-        this.setState({ disabled: false });
+      && state.email.includes('.com')
+      && state.password.length >= passwordLenght) {
+        this.setState({ isDisabled: false });
       } else {
-        this.setState({ disabled: true });
+        this.setState({ isDisabled: true });
       }
     });
   }
 
   render() {
-    const {
-      disabled,
-      email,
-      password,
-    } = this.state;
+    const { isDisabled, email, password } = this.state;
     const { getEmail } = this.props;
     return (
       <form>
-        <label htmlFor="email">
-          Email:
-          <input
-            data-testid="email-input"
-            type="email"
-            value={ email }
-            onChange={ this.handleChanges }
-          />
-        </label>
-        <label htmlFor="password">
-          Password:
-          <input
-            data-testid="password-input"
-            type="password"
-            value={ password }
-            onChange={ this.handleChanges }
-          />
-        </label>
+        <input
+          type="email"
+          placeholder="Insira seu Email"
+          data-testid="email-input"
+          onChange={ this.handleChanges }
+          value={ email }
+        />
+        <input
+          type="password"
+          placeholder="Insira sua senha"
+          data-testid="password-input"
+          onChange={ this.handleChanges }
+          value={ password }
+        />
         <Link to="/carteira">
           <button
             type="button"
-            disabled={ disabled }
+            disabled={ isDisabled }
             onClick={ () => getEmail(email) }
           >
             Entrar
@@ -78,7 +72,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getEmail: (email) => dispatch(recivedUser(email)),
+  getEmail: (email) => dispatch(receiveUser(email)),
 });
 
 Login.propTypes = {
