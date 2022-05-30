@@ -4,6 +4,9 @@ export const RECEIVE_USER = 'RECEIVE_USER';
 export const RECEIVE_EXPENSES = 'RECEIVE_EXPENSES';
 export const RECEIVE_CURRENCY = 'RECEIVE_CURRENCY';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const FINAL_EDIT = 'FINAL_EDIT';
+export const ADD_EDIT = 'ADD_EDIT';
 const REQUEST_CURRENCY = 'REQUEST_CURRENCY';
 const REQUEST_EXPENSES = 'REQUEST_EXPENSES';
 
@@ -42,4 +45,16 @@ export const fetchCurrencyAPI = () => async (dispatch) => {
 export const deleteExpense = (id) => ({
   type: DELETE_EXPENSE,
   id,
+});
+
+export const editExpense = (data) => ({
+  type: EDIT_EXPENSE,
+  data,
+});
+
+export const finalEdit = () => ({ type: 'FINAL_EDIT' });
+
+export const addEdit = (data) => ({
+  type: ADD_EDIT,
+  data,
 });
